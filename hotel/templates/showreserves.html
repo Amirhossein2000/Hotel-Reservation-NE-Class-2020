@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+    <title>Reservation</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+
+    <table border="5" class="wide">
+        <h1>room {{ room_number }} is reserved in these times, please pick other time and then click on reserve</h1>
+        <tr>
+            <th>start_time</th>
+            <th>end_time</th>
+        </tr>
+        {% for r in reserves %}
+            <tr>
+                <td>{{ r.start_time }}</td>
+                <td>{{ r.end_time }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+    <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+    <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+    <script type="text/javascript" src="/static/admin/js/core.js"></script>
+    <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="/static/admin/js/actions.js"></script>
+    <script type="text/javascript" src="/static/admin/js/urlify.js"></script>
+    <script type="text/javascript" src="/static/admin/js/prepopulate.js"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+
+
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+
+
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+
+<body class=" app-hotel model-reservation change-form"
+      data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+
+    <!-- Content -->
+    <div id="content" class="colM">
+
+        <h1>Reservation</h1>
+        <div id="content-main">
+
+
+            <form action="" method="post" id="reservation_form" novalidate>{% csrf_token %}
+                <div>
+
+
+                    <fieldset class="module aligned ">
+
+                        <div class="form-row field-services">
+
+
+                            <div>
+
+
+                                <label class="required" for="id_services">Services:</label>
+
+                                <div class="related-widget-wrapper">
+                                    {% for s in services %}
+                                        <div>
+                                            <label class="required"
+                                                   for="s_input_{{ s.service_id }}">{{ s.name }}</label>
+                                            <input type="checkbox" value="{{ s.service_id }}" name="services"
+                                                   id="s_input_{{ s.service_id }}">
+                                        </div>
+                                        <br>
+
+                                    {% endfor %}
+                                </div>
+
+                                <div class="help">Hold down “Control”, or “Command” on a Mac, to select more than one.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-row field-start_time">
+
+
+                            <div>
+
+
+                                <label class="required" for="id_start_time">Start time:</label>
+
+                                <input type="text" name="start_time" class="vDateField" size="10" required
+                                       id="id_start_time">
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-row field-end_time">
+
+
+                            <div>
+
+
+                                <label class="required" for="id_end_time">End time:</label>
+
+                                <input type="text" name="end_time" class="vDateField" size="10" required
+                                       id="id_end_time">
+
+
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+
+
+                    <div class="submit-row">
+
+                        <input type="submit" value="Reserve" class="default" name="_save">
+
+                    </div>
+
+
+                    <script type="text/javascript"
+                            id="django-admin-form-add-constants"
+                            src="/static/admin/js/change_form.js"
+
+                            data-model-name="reservation"
+                    >
+                    </script>
+
+
+                    <script type="text/javascript"
+                            id="django-admin-prepopulated-fields-constants"
+                            src="/static/admin/js/prepopulate_init.js"
+                            data-prepopulated-fields="[]">
+                    </script>
+
+
+                </div>
+            </form>
+        </div>
+
+
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+
+</body>
+</html>
+

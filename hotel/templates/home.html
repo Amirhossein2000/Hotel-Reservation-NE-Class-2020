@@ -1,0 +1,16 @@
+<table border="1">
+    <th>room_number</th>
+    <th>beds_count</th>
+    <th>floor_number</th>
+    <th>amount</th>
+    <th>reserve</th>
+    {% for room in rooms %}
+        <tr>
+            <td>{{ room.room_number }}</td>
+            <td>{{ room.beds_count }}</td>
+            <td>{{ room.floor_number }}</td>
+            <td>{{ room.amount }}</td>
+            <td><a href="/showreserves?room_number={{ room.room_number }}">reserve this room now!</a></td>
+        </tr>
+    {% endfor %}
+</table>
