@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.utils.datetime_safe import date
 from django.views import generic
 from hotel.models import Room, Reservation, Service
 from django.http import HttpResponse
@@ -26,7 +25,7 @@ def Signup(request):
 def ShowReserves(request):
     if request.method == 'GET':
         room_number = request.GET.get("room_number")
-        reserves = Reservation.objects.filter(room_id=room_number)
+        reserves = Reservation.objects.filter(room_id=room_number).order_by('start_time')
         services = Service.objects.all()
 
         return render(request, 'showreserves.html',
@@ -53,12 +52,18 @@ def ShowReserves(request):
                                   end_time=et, amount=amount)
         new_reserve.save()
 
-        services = form['services']
+        final_amount = new_reserve.amount[0]['amount']
+        services = form.getlist('services')
+
         for s in services:
             new_reserve.services.add(s)
-        new_reserve.save()
+            service_amount = Service.objects.filter(service_id=s).values('amount')
+            final_amount += service_amount[0]['amount']
 
-        return HttpResponse("reserved successfully!")
+        new_reserve.save()
+        Reservation.objects.filter(id=new_reserve.id).update(amount=final_amount)
+
+        return HttpResponse(f'reserved successfully! Final amount is {final_amount}')
 
 
 def HomeView(request):
